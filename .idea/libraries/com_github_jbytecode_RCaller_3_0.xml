@@ -5,6 +5,9 @@
       <root url="jar://$MAVEN_REPOSITORY$/com/github/jbytecode/RCaller/3.0/RCaller-3.0.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.6/commons-lang-2.6.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/jbytecode/RCaller/3.0/RCaller-3.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.6/commons-lang-2.6.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
