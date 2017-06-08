@@ -10,6 +10,7 @@ import java.util.logging.Logger;
  */
 public class RCallerInterface {
 
+    //example code that makes a pie graph
     public static void callRCodeDemo(){
         try {
             RCaller rCaller = RCaller.create();
@@ -45,8 +46,45 @@ public class RCallerInterface {
         }
     }
 
+    public double[] testCor(double[] arr1, double[] arr2){
+        RCaller rCaller = RCaller.create();
+        RCode code = RCode.create();
+        code.addDoubleArray("x", arr1);
+        code.addDoubleArray("y", arr2);
+        code.addRCode("cor<-lm(y~x)");
+        code.addRCode("b<-cor$residuals");
+        rCaller.setRCode(code);
+        rCaller.runAndReturnResult("cor");
+        double[] residuals = rCaller.getParser().getAsDoubleArray("fitted_values");
+        //for (double aV : residuals) {
+         //   System.out.println(aV);
+        //}
+        return residuals;
+    }
+
+    public static void testAvg(double[] arr){
+        RCaller rCaller = RCaller.create();
+        RCode code = RCode.create();
+        code.addDoubleArray("x", arr);
+        code.addRCode("a<-mean(x)");
+        rCaller.setRCode(code);
+        rCaller.runAndReturnResult("a");
+        double[] avg = rCaller.getParser().getAsDoubleArray("fitted_values");
+        for (double aV : avg) {
+            System.out.println(aV);
+        }
+
+    }
+
+
     public static void main(String[] args) {
-        callRCodeDemo();
+
+        double[] arra1 = new double[]{5, 10, 15, 20};
+        double[] arra2 = new double[]{10, 25, 34, 70};
+        //double[] arra3 = testCor(arra1, arra2);
+
+        testAvg(arra1);
+
     }
-    }
+}
 
