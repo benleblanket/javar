@@ -1,5 +1,5 @@
-import com.github.rcaller.rstuff.RCaller;
-import com.github.rcaller.rstuff.RCode;
+import com.github.rcaller.rstuff.*;
+import com.github.rcaller.util.Globals;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -47,7 +47,13 @@ public class RCallerInterface {
     }
 
     public double[] testCor(double[] arr1, double[] arr2){
-        RCaller rCaller = RCaller.create();
+        RCaller rCaller;
+        if(Globals.isWindows() == false) {
+            RCallerOptions options = RCallerOptions.create("/usr/local/Cellar/r/3.4.0_1/bin/Rscript", Globals.R_current, FailurePolicy.RETRY_5, Long.MAX_VALUE, 100, RProcessStartUpOptions.create());
+            rCaller = RCaller.create(options);
+        }else {
+            rCaller  = RCaller.create();
+        }
         RCode code = RCode.create();
         code.addDoubleArray("x", arr1);
         code.addDoubleArray("y", arr2);
@@ -62,18 +68,38 @@ public class RCallerInterface {
         return residuals;
     }
 
-    public static void testAvg(double[] arr){
+    public double avgTest(double[] arr){
         RCaller rCaller = RCaller.create();
         RCode code = RCode.create();
         code.addDoubleArray("x", arr);
         code.addRCode("a<-mean(x)");
         rCaller.setRCode(code);
         rCaller.runAndReturnResult("a");
-        double[] avg = rCaller.getParser().getAsDoubleArray("fitted_values");
-        for (double aV : avg) {
-            System.out.println(aV);
-        }
+        double[] avg = rCaller.getParser().getAsDoubleArray("a");
 
+        return (avg[0]);
+    }
+
+    public String gradingTest(String[] names, double[][] scores){
+        RCaller rCaller = RCaller.create();
+        RCode code = RCode.create();
+        code.addStringArray("students", names);
+        code.addDoubleMatrix("scores", scores);
+        double[] averages = new double[3];
+        code.addDoubleArray("averages", averages);
+        code.addRCode("for(i in 1:3){ " +
+                "averages[i]<-mean(scores[i]) " +
+                "}");
+        rCaller.setRCode(code);
+        rCaller.runAndReturnResult("averages");
+        double[] results = rCaller.getParser().getAsDoubleArray("averages");
+        int high = 1;
+        for(int i = 0; i < results.length; i++){
+            if(averages[i] > averages[high]){
+                high = i;
+            }
+        }
+        return names[high];
     }
 
 
@@ -83,7 +109,7 @@ public class RCallerInterface {
         double[] arra2 = new double[]{10, 25, 34, 70};
         //double[] arra3 = testCor(arra1, arra2);
 
-        testAvg(arra1);
+        //testAvg(arra1);
 
     }
 }
