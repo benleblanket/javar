@@ -9,7 +9,20 @@ import java.util.logging.Logger;
  * Created by Ben on 6/7/2017.
  */
 public class RCallerInterface {
+//RCaller rCaller = new RCaller();
+    //private static RCaller rCaller;
+/**
+    public RCallerInterface(RCaller system){
 
+        this.rCaller = system;
+        if(Globals.isWindows() == false) {
+            RCallerOptions options = RCallerOptions.create("/usr/local/Cellar/r/3.4.0_1/bin/Rscript", Globals.R_current, FailurePolicy.RETRY_5, Long.MAX_VALUE, 100, RProcessStartUpOptions.create());
+            this.rCaller = RCaller.create(options);
+        }else {
+            this.rCaller  = RCaller.create();
+        }
+    }
+**/
     //example code that makes a pie graph
     public static void callRCodeDemo(){
         try {
@@ -46,7 +59,7 @@ public class RCallerInterface {
         }
     }
 
-    public double[] testCor(double[] arr1, double[] arr2){
+    public static double[] testCor(double[] arr1, double[] arr2){
         RCaller rCaller;
         if(Globals.isWindows() == false) {
             RCallerOptions options = RCallerOptions.create("/usr/local/Cellar/r/3.4.0_1/bin/Rscript", Globals.R_current, FailurePolicy.RETRY_5, Long.MAX_VALUE, 100, RProcessStartUpOptions.create());
@@ -54,6 +67,7 @@ public class RCallerInterface {
         }else {
             rCaller  = RCaller.create();
         }
+
         RCode code = RCode.create();
         code.addDoubleArray("x", arr1);
         code.addDoubleArray("y", arr2);
@@ -68,8 +82,14 @@ public class RCallerInterface {
         return residuals;
     }
 
-    public double avgTest(double[] arr){
-        RCaller rCaller = RCaller.create();
+    public static double avgTest(double[] arr){
+        RCaller rCaller;
+        if(Globals.isWindows() == false) {
+            RCallerOptions options = RCallerOptions.create("/usr/local/Cellar/r/3.4.0_1/bin/Rscript", Globals.R_current, FailurePolicy.RETRY_5, Long.MAX_VALUE, 100, RProcessStartUpOptions.create());
+            rCaller = RCaller.create(options);
+        }else {
+            rCaller  = RCaller.create();
+        }
         RCode code = RCode.create();
         code.addDoubleArray("x", arr);
         code.addRCode("a<-mean(x)");
@@ -80,8 +100,14 @@ public class RCallerInterface {
         return (avg[0]);
     }
 
-    public String gradingTest(String[] names, double[][] scores){
-        RCaller rCaller = RCaller.create();
+    public static String gradingTest(String[] names, double[][] scores){
+        RCaller rCaller;
+        if(Globals.isWindows() == false) {
+            RCallerOptions options = RCallerOptions.create("/usr/local/Cellar/r/3.4.0_1/bin/Rscript", Globals.R_current, FailurePolicy.RETRY_5, Long.MAX_VALUE, 100, RProcessStartUpOptions.create());
+            rCaller = RCaller.create(options);
+        }else {
+            rCaller  = RCaller.create();
+        }
         RCode code = RCode.create();
         code.addStringArray("students", names);
         code.addDoubleMatrix("scores", scores);
